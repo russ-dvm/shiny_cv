@@ -12,19 +12,20 @@ createLink <- function(val) {
 }
 
 ## Create Awards DF.
-awards <- read.table("data/awards.txt", h=T, na.strings="na", sep="\t")
+awards <- read.table("data/awards.txt", h=T, na.strings="na", sep="\t", stringsAsFactors = F)
 awards$duration <- as.numeric(awards$duration)
 awards$date <- as.Date(awards$date)
 awards$date_end <- as.Date(awards$date_end)
 awards$duration <- awards$date_end - awards$date
 
-## Subset the single instance awards (prizes, travel grants, etc)
-single <- subset(awards, is.na(awards$date_end))
-
 ## Reorder by date, and add ranking for clicking later.
 awards <- awards[order(awards$date, decreasing = T),]
 awards$rank <- c(1:nrow(awards))
 awards$award_name <- factor(awards$award_name, levels = awards$award_name)
+
+## Subset the single instance awards (prizes, travel grants, etc)
+single <- subset(awards, is.na(awards$date_end))
+
 
 ui <- fluidPage(
   theme = "bootstrap-flatly.css",
@@ -53,7 +54,6 @@ ui <- fluidPage(
                
                ##main panel for pubs
                column(10,
-                  # paste("Select from the options on the left"),
                   conditionalPanel(
                     condition = "input.pub_type == 'all'",
                     paste("Please select a publication type from the drop down menu on the left")
@@ -74,7 +74,7 @@ ui <- fluidPage(
                )
              )
           ), 
-    tabPanel("Awards", plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName"), verbatimTextOutput("selected_rows")), 
+    tabPanel("Awards", plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName")), 
     tabPanel("Work Experience"), 
     tabPanel("PDF", icon = icon("download", "fa-1x")),
     collapsible = T
@@ -109,16 +109,16 @@ server <- function(input, output, session) {
     journals <- journals[order(journals$year, decreasing = T),]
     colnames(journals) <- c("Authors", "Year", "Title", "Journal", "Volume", "Pages", "Link")
     # 
-    # return(journals)
+    return(journals)
   }, escape = F, options = list(pageLength=10))
   
   # Awards graph
   output$awards_graph <- renderPlot({
-    ggplot(awards, aes(fill = amount, x = award_name, y = date + duration/2)) + 
+    ggplot(awards, aes(fill = rank, x = award_name, y = date + duration/2)) + 
       geom_tile(aes(height = duration, width = 0.9)) +
-      geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = amount)) + 
-      scale_color_viridis(discrete = F) + 
-      scale_fill_viridis(discrete = F) +
+      geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = rank)) + 
+      scale_color_viridis() +
+      scale_fill_viridis() +
       coord_flip() +
       theme_classic() + 
       theme(legend.position = "none") +
@@ -138,20 +138,10 @@ server <- function(input, output, session) {
       lvls <- levels(awards$award_name)
       name <- lvls[round(input$awards_click$y)]
       HTML("Here's some more info on", name, "<br>Value: $", awards[awards$award_name == name,2], 
-           "<br>Description:", as.vector(awards[round(input$awards_click$y),7]),
-           "<br>Awarded on:", as.Date(awards[round(input$awards_click$y),5]))
-    }
+           "<br>Description:", as.vector(awards[round(input$awards_click$y),7])
+    
+    )}
   })
-  
-  # Print the rows of the data frame which match the x value
-  output$selected_rows <- renderPrint({
-    if (is.null(input$awards_click$y)) return()
-    else {
-      keeprows <- round(input$awards_click$y) == as.numeric(awards$award_name)
-      # awards[round(input$awards_click$y),7]
-    }
-  })
-  
 }
 
 shinyApp(ui, server)

@@ -1,0 +1,16 @@
+award_name	amount	type	duration	date	date_end	desc
+Easter Bush Research Consortium and Pfizer Bursary	6557	scholarship	One time	2011-09-01	na	
+6th Orthomyxovirus Research Conference Travel Grant	500	award	one time	2012-09-01	na	
+ACVP Resident/Graduate Student Travel Award	655	award	one time	2012-12-01	na	
+Pfizer Prize for Best Student 2011 – 2012 MSc One Health	na	award	one time	2012-08-30	na	
+Graduate Service Assistantship	11074	scholarship	3	2012-09-01	2014-04-01	
+Graduate Research Assistantship	16200	scholarship	3	2012-09-01	2014-04-01	
+Graduate Teaching Assistantship and Bursary	4921	scholarship	3	2012-09-01	2014-04-01	
+Winner, Three Minute Thesis Competition, DVSc Category	100	award	one time	2014-02-07	na	
+Ontario Veterinary College PhD Fellowship 	30000	scholarship	3	2014-04-01	2017-04-01	
+Canadian Bioinformatics Workshops Registration Award	500	award	one time	2014-06-09	na	
+Ontario Graduate Scholarship 	15000	scholarship	1	2015-09-01	2016-09-01	
+Winner, Oral Presentations (PhD), Swine Research Day	200	award	one time	2016-05-05	na	
+Queen Elizabeth II Scholarship in Science & Technology 	15000	scholarship	1	2016-09-01	2017-09-01	
+2016 ACVP Young Investigator Award 	260	award	one time	2016-12-06	na	
+Korean-Canadian Dr. F. Schofield Memorial Scholarship	2000	award	one time	2017-04-20	na	The scholarship honours Dr. Frank Schofield active role in the Korean independence movement, as well as his academic and medical contributions in the early 20th century. The recipient must demonstrate scholarship and must have contributed to the academic life of the department and College, in the tradition of Dr. Schofield.

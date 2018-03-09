@@ -4,12 +4,27 @@ library(markdown)
 library(ggplot2)
 library(viridis)
 # getwd()
-# setwd("~/Sync/public_html/shiny_cv/")
+# setwd("~/Dropbox/shiny_cv/")
 
 ##modified from https://stackoverflow.com/questions/28117556/clickable-links-in-shiny-datatable
 createLink <- function(val) {
   ifelse(is.na(val) == T, sprintf('<a href = "#"></a>'), sprintf('<a href="%s" target="_blank" class="btn btn-primary">Link</a>',val))
 }
+
+## Create Awards DF.
+awards <- read.table("data/awards.txt", h=T, na.strings="na", sep="\t")
+awards$duration <- as.numeric(awards$duration)
+awards$date <- as.Date(awards$date)
+awards$date_end <- as.Date(awards$date_end)
+awards$duration <- awards$date_end - awards$date
+
+## Subset the single instance awards (prizes, travel grants, etc)
+single <- subset(awards, is.na(awards$date_end))
+
+## Reorder by date, and add ranking for clicking later.
+awards <- awards[order(awards$date, decreasing = T),]
+awards$rank <- c(1:nrow(awards))
+awards$award_name <- factor(awards$award_name, levels = awards$award_name)
 
 ui <- fluidPage(
   theme = "bootstrap-flatly.css",
@@ -59,7 +74,7 @@ ui <- fluidPage(
                )
              )
           ), 
-    tabPanel("Awards", plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("test"), verbatimTextOutput("selected_rows")), 
+    tabPanel("Awards", plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName"), verbatimTextOutput("selected_rows")), 
     tabPanel("Work Experience"), 
     tabPanel("PDF", icon = icon("download", "fa-1x")),
     collapsible = T
@@ -93,23 +108,12 @@ server <- function(input, output, session) {
     journals <- journals[,c(1:6,8)]
     journals <- journals[order(journals$year, decreasing = T),]
     colnames(journals) <- c("Authors", "Year", "Title", "Journal", "Volume", "Pages", "Link")
-    
-    return(journals)
+    # 
+    # return(journals)
   }, escape = F, options = list(pageLength=10))
   
   # Awards graph
   output$awards_graph <- renderPlot({
-    awards <- read.table("./data/awards.txt", h=T, na.strings="na", sep="\t")
-    awards$duration <- as.numeric(awards$duration)
-    awards$date <- as.Date(awards$date)
-    awards$date_end <- as.Date(awards$date_end)
-    awards$duration <- awards$date_end - awards$date
-    
-    single <- subset(awards, is.na(awards$date_end))
-    
-    awards <- awards[order(awards$date, decreasing = T),]
-    awards$rank <- c(1:nrow(awards))
-    awards$award_name <- factor(awards$award_name, levels = awards$award_name)
     ggplot(awards, aes(fill = amount, x = award_name, y = date + duration/2)) + 
       geom_tile(aes(height = duration, width = 0.9)) +
       geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = amount)) + 
@@ -128,13 +132,14 @@ server <- function(input, output, session) {
     nearPoints(m, input$awards_click, yvar = rank, maxpoints = 1, threshold = 10)
   })
   
-  output$test <- renderText({
+  output$awardName <- renderText({
     if (is.null(input$awards_click$x)) return("")
     else {
       lvls <- levels(awards$award_name)
       name <- lvls[round(input$awards_click$y)]
       HTML("Here's some more info on", name, "<br>Value: $", awards[awards$award_name == name,2], 
-           "<br>Description:", awards[awards$award_name == name,7])
+           "<br>Description:", as.vector(awards[round(input$awards_click$y),7]),
+           "<br>Awarded on:", as.Date(awards[round(input$awards_click$y),5]))
     }
   })
   
@@ -143,7 +148,7 @@ server <- function(input, output, session) {
     if (is.null(input$awards_click$y)) return()
     else {
       keeprows <- round(input$awards_click$y) == as.numeric(awards$award_name)
-      awards[keeprows,7]
+      # awards[round(input$awards_click$y),7]
     }
   })
   

@@ -3,8 +3,6 @@ library(leaflet)
 library(markdown)
 library(ggplot2)
 library(viridis)
-# getwd()
-# setwd("~/Dropbox/shiny_cv/")
 
 ##modified from https://stackoverflow.com/questions/28117556/clickable-links-in-shiny-datatable
 createLink <- function(val) {
@@ -23,9 +21,6 @@ awards <- awards[order(awards$date, decreasing = T),]
 awards$rank <- c(1:nrow(awards))
 awards$award_name <- factor(awards$award_name, levels = awards$award_name)
 
-## Subset the single instance awards (prizes, travel grants, etc)
-single <- subset(awards, is.na(awards$date_end))
-
 
 ui <- fluidPage(
   theme = "bootstrap-flatly.css",
@@ -40,7 +35,7 @@ ui <- fluidPage(
     
     title = "RUSSELL FRASER", 
     
-    tabPanel("About", value = "nav_about", includeMarkdown("docs/test.md")),
+    tabPanel("About", value = "nav_about", includeHTML("docs/index.html")),
     
     tabPanel("Education", includeHTML("docs/test.html")), 
     
@@ -49,7 +44,7 @@ ui <- fluidPage(
                
                ##sidebar for publications
                column(2, offset=0,
-                      selectInput("pub_type","Select a Publication Type:",c("All"="all", "Journal Articles"="jour","Conferences"="conf", "Other"="text"), selected="all")
+                      selectInput("pub_type","Select a Publication Type:",c("Select"="all", "Journal Articles"="jour","Conferences"="conf", "Other"="text"), selected="all")
                ),
                
                ##main panel for pubs
@@ -74,7 +69,14 @@ ui <- fluidPage(
                )
              )
           ), 
-    tabPanel("Awards", plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName")), 
+    tabPanel("Awards", 
+             fluidRow(
+               column(2, offset = 0, 
+                      sliderInput("awardDateSlider", label = "Select a range of dates", min = min(awards$date), max = max(awards$date), value = c(min(awards$date),max(awards$date)), timeFormat = "%b %Y")),
+               column(10, 
+                plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName"))
+               )
+             ), 
     tabPanel("Work Experience"), 
     tabPanel("PDF", icon = icon("download", "fa-1x")),
     collapsible = T
@@ -95,7 +97,7 @@ server <- function(input, output, session) {
       #make the map
       n <- leaflet(pubs)
       n <- addTiles(n)
-      n <- addMarkers(n, lat= ~lat,lng= ~long, popup=paste(sep="</br>", pubs$meeting_name, pubs$year, pubs$meeting_location, paste("Presented by:", pubs$presented_by)), clusterOptions = markerClusterOptions())
+      n <- addMarkers(n, lat= ~lat,lng= ~long, popup=paste(sep="</br>", paste("\"", pubs$title, "\"", sep = ""), pubs$meeting_name, pubs$year, pubs$meeting_location, paste("Presented by:", pubs$presented_by)), clusterOptions = markerClusterOptions())
       n
   })
 
@@ -112,11 +114,21 @@ server <- function(input, output, session) {
     return(journals)
   }, escape = F, options = list(pageLength=10))
   
+ 
   # Awards graph
   output$awards_graph <- renderPlot({
-    ggplot(awards, aes(fill = rank, x = award_name, y = date + duration/2)) + 
+    
+    minDate <- input$awardDateSlider[1]
+    maxDate <- input$awardDateSlider[2]
+    
+    awards2 <- subset(awards, date >= minDate & (date_end <= maxDate | is.na(date_end)))
+    
+    single <- subset(awards, is.na(awards$date_end))
+    single2 <- subset(single, date >= minDate & date <= maxDate)
+    
+    ggplot(awards2, aes(fill = rank, x = award_name, y = date + duration/2)) + 
       geom_tile(aes(height = duration, width = 0.9)) +
-      geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = rank)) + 
+      geom_point(data = single2, aes(x = award_name, y = date, size = 10, colour = rank)) +
       scale_color_viridis() +
       scale_fill_viridis() +
       coord_flip() +

@@ -7020,3 +7020,33 @@ a.list-group-item-danger.active:focus {
 .popover {
   color: #2c3e50;
 }
+
+div.fixed-bg {
+    background-image: url("images/test.jpg");
+    min-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: -30px;
+    padding: 40px;
+}
+
+div.transbox {
+    margin-left: 30px;
+    background-color: #ffffff;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-image: none;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+    width: 75%;
+    border-radius: 5px;
+
+}
+
+div.transbox p {
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+}

@@ -3,6 +3,7 @@ library(leaflet)
 library(markdown)
 library(ggplot2)
 library(viridis)
+library(visNetwork)
 
 ##modified from https://stackoverflow.com/questions/28117556/clickable-links-in-shiny-datatable
 createLink <- function(val) {

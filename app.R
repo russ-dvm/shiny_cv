@@ -78,7 +78,7 @@ ui <- fluidPage(
                )
              ), 
     tabPanel("Work Experience"), 
-    tabPanel("PDF", icon = icon("download", "fa-1x")),
+    tabPanel("PDF", icon = icon("download", "fa-1x"), uiOutput('pdfviewer')),
     collapsible = T
   )
 )
@@ -110,7 +110,6 @@ server <- function(input, output, session) {
     journals <- journals[,c(1:6,8)]
     journals <- journals[order(journals$year, decreasing = T),]
     colnames(journals) <- c("Authors", "Year", "Title", "Journal", "Volume", "Pages", "Link")
-    # 
     return(journals)
   }, escape = F, options = list(pageLength=10))
   
@@ -153,6 +152,11 @@ server <- function(input, output, session) {
            "<br>Description:", as.vector(awards[round(input$awards_click$y),7])
     
     )}
+  })
+  
+  ##CV PDF
+  output$pdfviewer <- renderUI({
+    tags$iframe(style="height:600px; width:100%", src="RFraser_current.pdf")
   })
 }
 

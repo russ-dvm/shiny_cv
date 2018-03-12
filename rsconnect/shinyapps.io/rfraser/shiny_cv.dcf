@@ -5,8 +5,8 @@ account: rfraser
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 163024
-bundleId: 1259830
+bundleId: 1264504
 url: https://rfraser.shinyapps.io/shiny_cv/
-when: 1520536270.51493
+when: 1520866880.7813
 asMultiple: FALSE
 asStatic: FALSE

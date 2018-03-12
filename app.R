@@ -78,7 +78,7 @@ ui <- fluidPage(
                )
              ), 
     tabPanel("Work Experience"), 
-    tabPanel("PDF", icon = icon("download", "fa-1x")),
+    tabPanel("PDF", icon = icon("download", "fa-1x"), uiOutput('pdfviewer')),
     collapsible = T
   )
 )
@@ -152,6 +152,11 @@ server <- function(input, output, session) {
            "<br>Description:", as.vector(awards[round(input$awards_click$y),7])
     
     )}
+  })
+  
+  ##CV PDF
+  output$pdfviewer <- renderUI({
+    tags$iframe(style="height:600px; width:100%", src="RFraser_current.pdf")
   })
 }
 

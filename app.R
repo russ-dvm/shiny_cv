@@ -110,7 +110,6 @@ server <- function(input, output, session) {
     journals <- journals[,c(1:6,8)]
     journals <- journals[order(journals$year, decreasing = T),]
     colnames(journals) <- c("Authors", "Year", "Title", "Journal", "Volume", "Pages", "Link")
-    # 
     return(journals)
   }, escape = F, options = list(pageLength=10))
   

@@ -77,7 +77,14 @@ ui <- fluidPage(
                 plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName"))
                )
              ), 
-    tabPanel("Work Experience"), 
+    tabPanel("Work Experience"),
+    tabPanel("Network Analysis", 
+             fluidRow(
+              column(2, offset = 0)),
+              column(10,
+                    visNetworkOutput("visNet"))
+             ),
+
     tabPanel("PDF", icon = icon("download", "fa-1x"), uiOutput('pdfviewer')),
     collapsible = T
   )
@@ -152,6 +159,40 @@ server <- function(input, output, session) {
            "<br>Description:", as.vector(awards[round(input$awards_click$y),7])
     
     )}
+  })
+  
+  ##Network analysis with visNetwork
+  output$visNet <- renderVisNetwork({
+    
+    ## Build DF
+    Net <- read.table("data/network.txt", h = T, stringsAsFactors = F, sep = "\t")
+    
+    ##Define nodes
+    nodes <- data.frame(node = unique(Net$node))
+    nodes$group <- "degree"
+    nodes <- rbind(nodes, data.frame(node = unique(Net$edge), group = Net$group))
+    nodes$id <- c(1:nrow(nodes))
+    nodes <- select(nodes, id, node, group)
+    colnames(nodes) <- c("id", "label", "group")
+    
+    ##Create edgelist
+    Net <- select(Net, node, edge)
+    NetA <- left_join(Net, nodes, by = c("node" = "label")) %>%  rename(from = id) %>% select(node, edge, from)
+    NetB <- left_join(NetA, nodes, by = c("edge" = "label")) %>% rename(to = id)
+    NetC <- select(NetB, from, to)
+    ##Manually define education nodes - avoids creating duplicate degree nodes
+    NetC <- rbind(NetC, c(4, 2), c(2,3), c(3,1))
+    
+    ##build the network analysis
+    visNetwork(nodes, NetC, height = "800px") %>% 
+      visGroups(groupname = "award", shape = "icon", icon = list(code = "f091", color = "green")) %>% 
+      visGroups(groupname = "teaching", shape = "icon", icon = list(code = "f086", color = "purple")) %>% 
+      visGroups(groupname = "work", shape = "icon", icon = list(code = "f0f1", color = "red")) %>% 
+      visGroups(groupname = "publication", shape = "icon", icon = list(code = "f15c", color = "orange")) %>% 
+      visGroups(groupname = "degree", shape = "icon", icon = list(code = "f19d")) %>% 
+      addFontAwesome() %>% 
+      visOptions(selectedBy = list(variable = "group"))
+    
   })
   
   ##CV PDF

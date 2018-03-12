@@ -1,0 +1,23 @@
+node	edge	group
+PhD	Fraser et al A	publication
+PhD	3 Minute Thesis	award
+PhD	Korean-Canadian Dr. F. Schofield Memorial Scholarship	award
+DVM	Sechelt Animal Hospital	work
+MSc	Easter Bush	award
+BSc	Silvertown et al	publication
+BSc	Isogai et al	publication
+MSc	Easter Bush Research Consortium and Pfizer Bursary	award
+MSc	Pfizer Prize	award
+MSc	6th Orthomyxovirus Travel Grant	award
+PhD	ACVP Resident Travel Award	award
+PhD	Anatomic Pathology Residency	work
+DVM	Animal Health Clinic	work
+DVM	ACCM	work
+PhD	Mechanisms of Disease	teaching
+PhD	BIOM	teaching
+PhD	OVC PhD Fellowship	award
+PhD	OGS	award
+PhD	Queen Elizabeth II Scholarship	award
+PhD	Wills et al	publication
+PhD	Fraser et al B	publication
+PhD	Principles of Disease (TA)	teaching

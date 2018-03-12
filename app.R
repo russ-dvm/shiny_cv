@@ -1,7 +1,7 @@
 library(shiny)
 library(leaflet)
 library(markdown)
-library(ggplot2)
+library(tidyverse)
 library(viridis)
 library(visNetwork)
 

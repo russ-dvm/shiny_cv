@@ -73,19 +73,34 @@ ui <- fluidPage(
     tabPanel("Awards", 
              fluidRow(
                column(2, offset = 0, 
-                      sliderInput("awardDateSlider", label = "Select a range of dates", min = min(awards$date), max = max(awards$date), value = c(min(awards$date),max(awards$date)), timeFormat = "%b %Y")),
+                      # TODO: Get the slider working with the different geoms. Currently single-point prizes don't filter properly.
+                      # sliderInput("awardDateSlider", label = "Select a range of dates", min = min(awards$date), max = max(awards$date), value = c(min(awards$date),max(awards$date)), timeFormat = "%b %Y"),
+                      radioButtons("awardColour", "Colour scheme", choices = list("Magma" = "A", "Inferno" = "B", "Plasma" = "C", "Viridis" = "D")),
+                      sliderInput("awardColourSlider", label = "Adjust hue", min = 0, max = 1, value = c(0,1))
+                      ),
                column(10, 
                 plotOutput("awards_graph", click = "awards_click", hover = "awards_hover"), htmlOutput("awardName"))
-               )
+               ),
+             fluidRow(
+               column(10, offset = 2,
+                      HTML("</br><p>Above is a figure outlining the various awards, scholarships, and bursarsies I've been fortunate enough to receive since 2012. Points indicate a one-time award, while the bars (tiles) indicate scholarships awards over a number of years. Clicking a point or a bar will bring up more detailed information, including a description and the value of the award/scholarship.</p>
+                          <p>The plot is constructed using <a href = \"https://ggplot2.tidyverse.org/\">ggplot2</a>, specifically geom_point and geom_tile. The colour scheme is from the <a href = \"https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html\">Viridis package</a>.</p>
+                          <p>The colour schemes included in Viridis are designed to be colour-blind friendly. Have a click through the options to visualize the different schemes. The hue can be adjusted using the slide bar. </p>"))
+             )
              ), 
     tabPanel("Work Experience"),
     tabPanel("Network Analysis", 
-             fluidRow(
-              column(2, offset = 0)),
-              column(10,
-                    visNetworkOutput("visNet"))
-             ),
-
+            fluidRow(
+              column(10, offset = 0,
+                    visNetworkOutput("visNet")),
+              column(2, offset = 0,
+                     HTML("<br><br>Click and drag to manipulate the diagram.<br><br>Data points are individually clickable and dragable - have fun!<br><br>Scroll to zoom."))
+              ),
+            fluidRow(column(10, offset = 1,
+                HTML("<p>This network analysis provides a view of how CV data points are related to one another, specifically using degrees as anchoring nodes. This gives a general idea of the temporal relationship of the various CV items. Data points are classified broadly as noted in the drop down menu, which can be used to focus or isolate specific categories. More details on each category can be found in one of the more in depth visualizations found on other tabs.</p>
+                     <p>The network analysis was constructed using the <a href = \"https://cran.r-project.org/web/packages/visNetwork/vignettes/Introduction-to-visNetwork.html\">visNetwork</a> package, which is awesome.</p>
+                     <p><em>Note: I'm aware that the labels overlap with nodes and other labels, occasionally making them difficult to read. I have not yet found a way to repel the labels to make them more legible. For now, it is relatively easy to simply click a node and drag it, revealing the label.</em></p>")))
+            ),
     tabPanel("PDF", icon = icon("download", "fa-1x"), uiOutput('pdfviewer')),
     collapsible = T
   )
@@ -125,19 +140,20 @@ server <- function(input, output, session) {
   # Awards graph
   output$awards_graph <- renderPlot({
     
-    minDate <- input$awardDateSlider[1]
-    maxDate <- input$awardDateSlider[2]
-    
-    awards2 <- subset(awards, date >= minDate & (date_end <= maxDate | is.na(date_end)))
+    # minDate <- input$awardDateSlider[1]
+    # maxDate <- input$awardDateSlider[2]
+
+    # awards2 <- subset(awards, !is.na(awards$date_end))
+    # awards2 <- subset(awards, date >= minDate & (date_end <= maxDate | is.na(date_end)))
     
     single <- subset(awards, is.na(awards$date_end))
-    single2 <- subset(single, date >= minDate & date <= maxDate)
+    # single2 <- subset(single, date >= minDate & date <= maxDate)
     
-    ggplot(awards2, aes(fill = rank, x = award_name, y = date + duration/2)) + 
+    ggplot(awards, aes(fill = rank, x = award_name, y = date + duration/2)) + 
       geom_tile(aes(height = duration, width = 0.9)) +
-      geom_point(data = single2, aes(x = award_name, y = date, size = 10, colour = rank)) +
-      scale_color_viridis() +
-      scale_fill_viridis() +
+      geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = rank)) +
+      scale_color_viridis(option = input$awardColour, begin = input$awardColourSlider[1], end = input$awardColourSlider[2]) +
+      scale_fill_viridis(option = input$awardColour, begin = input$awardColourSlider[1], end = input$awardColourSlider[2]) +
       coord_flip() +
       theme_classic() + 
       theme(legend.position = "none") +
@@ -146,7 +162,7 @@ server <- function(input, output, session) {
       scale_y_date(date_breaks = "1 year", date_labels = "%Y")
   })
   
-  # Click information from awards graph
+  ## Click information from awards graph
   output$test <- renderPrint({
     nearPoints(m, input$awards_click, yvar = rank, maxpoints = 1, threshold = 10)
   })
@@ -156,8 +172,8 @@ server <- function(input, output, session) {
     else {
       lvls <- levels(awards$award_name)
       name <- lvls[round(input$awards_click$y)]
-      HTML("Here's some more info on", name, "<br>Value: $", awards[awards$award_name == name,2], 
-           "<br>Description:", as.vector(awards[round(input$awards_click$y),7])
+      HTML("<b>Award/scholarship</b>:", name, "<br><b>Value</b>: $", awards[awards$award_name == name,2], 
+           "<br><b>Description</b>:<em>", as.vector(awards[round(input$awards_click$y),7])
     
     )}
   })
@@ -185,7 +201,7 @@ server <- function(input, output, session) {
     NetC <- rbind(NetC, c(4, 2), c(2,3), c(3,1))
     
     ##build the network analysis
-    visNetwork(nodes, NetC, height = "800px") %>% 
+    visNetwork(nodes, NetC) %>% 
       visGroups(groupname = "award", shape = "icon", icon = list(code = "f091", color = "green")) %>% 
       visGroups(groupname = "teaching", shape = "icon", icon = list(code = "f086", color = "purple")) %>% 
       visGroups(groupname = "work", shape = "icon", icon = list(code = "f0f1", color = "red")) %>% 

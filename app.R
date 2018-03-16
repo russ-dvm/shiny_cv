@@ -56,7 +56,7 @@ ui <- fluidPage(
                   ),
                   conditionalPanel(
                     condition = "input.pub_type == 'conf'",
-                    leafletOutput("mymap") # TODO adjust dimensions of the map
+                    leafletOutput("mymap", height = 600) # TODO adjust dimensions of the map
                   ),
                   conditionalPanel(
                     condition = "input.pub_type == 'jour'",
@@ -92,7 +92,7 @@ ui <- fluidPage(
     tabPanel("Network Analysis", 
             fluidRow(
               column(10, offset = 0,
-                    visNetworkOutput("visNet")),
+                    visNetworkOutput("visNet", height = 600)),
               column(2, offset = 0,
                      HTML("<br><br>Click and drag to manipulate the diagram.<br><br>Data points are individually clickable and dragable - have fun!<br><br>Scroll to zoom."))
               ),
@@ -139,6 +139,7 @@ server <- function(input, output, session) {
  
   # Awards graph
   output$awards_graph <- renderPlot({
+
     
     # minDate <- input$awardDateSlider[1]
     # maxDate <- input$awardDateSlider[2]

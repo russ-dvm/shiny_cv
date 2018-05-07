@@ -140,7 +140,12 @@ server <- function(input, output, session) {
  
   # Awards graph
   output$awards_graph <- renderPlot({
+<<<<<<< HEAD
     ## DATE SLIDER STUFF    
+=======
+
+    
+>>>>>>> 95903ba36c82c804ed18678f6085550754e27324
     # minDate <- input$awardDateSlider[1]
     # maxDate <- input$awardDateSlider[2]
     # awards2 <- subset(awards, !is.na(awards$date_end))

@@ -1,23 +1,33 @@
 node	edge	group
-PhD	Fraser et al A	publication
+PhD	Fraser et al (2018a)	publication
 PhD	3 Minute Thesis	award
 PhD	Korean-Canadian Dr. F. Schofield Memorial Scholarship	award
 DVM	Sechelt Animal Hospital	work
-MSc	Easter Bush	award
-BSc	Silvertown et al	publication
-BSc	Isogai et al	publication
+BSc	Silvertown et al (2005)	publication
+BSc	Isogai et al (2007)	publication
 MSc	Easter Bush Research Consortium and Pfizer Bursary	award
-MSc	Pfizer Prize	award
+MSc	Pfizer Prize for Best Student	award
 MSc	6th Orthomyxovirus Travel Grant	award
 PhD	ACVP Resident Travel Award	award
 PhD	Anatomic Pathology Residency	work
 DVM	Animal Health Clinic	work
 DVM	ACCM	work
-PhD	Mechanisms of Disease	teaching
-PhD	BIOM	teaching
+PhD	Lecturer (Mechanisms of Disease)	teaching
+PhD	Guest lecturer (BIOM6800)	teaching
 PhD	OVC PhD Fellowship	award
 PhD	OGS	award
 PhD	Queen Elizabeth II Scholarship	award
-PhD	Wills et al	publication
-PhD	Fraser et al B	publication
-PhD	Principles of Disease (TA)	teaching
+PhD	Wills et al (2018)	publication
+PhD	Fraser et al (2018b)	publication
+MSc	Wellcome Trust Essay	publication
+PhD	Bors et al (2017)	publication
+BSc	Meakins-Christie Lab, McGill	work
+BSc	Summerlee Lab (University of Guelph)	work
+MSc	Digard Lab (Roslin Institute)	work
+Meakins-Christie Lab, McGill	Isogai et al (2007)	publication
+BSc	DVM	degree
+DVM	MSc	degree
+MSc	PhD	degree
+Summerlee Lab (University of Guelph)	Silvertown et al (2005)	publication
+PhD	Anatomic Pathology Rotation	teaching
+PhD	TA (Principles of Disease)	teaching

@@ -12,6 +12,7 @@ createLink <- function(val) {
 
 ## Create Awards DF.
 awards <- read.table("data/awards.txt", h=T, na.strings="na", sep="\t", stringsAsFactors = F)
+
 awards$duration <- as.numeric(awards$duration)
 awards$date <- as.Date(awards$date)
 awards$date_end <- as.Date(awards$date_end)
@@ -56,7 +57,7 @@ ui <- fluidPage(
                   ),
                   conditionalPanel(
                     condition = "input.pub_type == 'conf'",
-                    leafletOutput("mymap") # TODO adjust dimensions of the map
+                    leafletOutput("mymap", height = 600) # TODO adjust dimensions of the map
                   ),
                   conditionalPanel(
                     condition = "input.pub_type == 'jour'",
@@ -92,7 +93,7 @@ ui <- fluidPage(
     tabPanel("Network Analysis", 
             fluidRow(
               column(10, offset = 0,
-                    visNetworkOutput("visNet")),
+                    visNetworkOutput("visNet", height = 600)),
               column(2, offset = 0,
                      HTML("<br><br>Click and drag to manipulate the diagram.<br><br>Data points are individually clickable and dragable - have fun!<br><br>Scroll to zoom."))
               ),
@@ -139,24 +140,25 @@ server <- function(input, output, session) {
  
   # Awards graph
   output$awards_graph <- renderPlot({
-    
+    ## DATE SLIDER STUFF    
     # minDate <- input$awardDateSlider[1]
     # maxDate <- input$awardDateSlider[2]
-
     # awards2 <- subset(awards, !is.na(awards$date_end))
     # awards2 <- subset(awards, date >= minDate & (date_end <= maxDate | is.na(date_end)))
-    
-    single <- subset(awards, is.na(awards$date_end))
     # single2 <- subset(single, date >= minDate & date <= maxDate)
     
-    ggplot(awards, aes(fill = rank, x = award_name, y = date + duration/2)) + 
+    ## Graph
+    single <- subset(awards, is.na(awards$date_end))
+    
+    ggplot(awards, aes(fill = Value, x = award_name, y = date + duration/2)) + 
       geom_tile(aes(height = duration, width = 0.9)) +
-      geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = rank)) +
-      scale_color_viridis(option = input$awardColour, begin = input$awardColourSlider[1], end = input$awardColourSlider[2]) +
-      scale_fill_viridis(option = input$awardColour, begin = input$awardColourSlider[1], end = input$awardColourSlider[2]) +
+      geom_point(data = single, aes(x = award_name, y = date, size = 10, colour = Value)) +
+      scale_color_viridis(option = input$awardColour, begin = input$awardColourSlider[1], end = input$awardColourSlider[2], limits = c(min(awards$Value, na.rm = T), max(awards$Value, na.rm = T))) +
+      scale_fill_viridis(option = input$awardColour, begin = input$awardColourSlider[1], end = input$awardColourSlider[2], limits = c(min(awards$Value, na.rm = T), max(awards$Value, na.rm = T))) +
+      guides(size = F) +
       coord_flip() +
       theme_classic() + 
-      theme(legend.position = "none") +
+      # theme(legend.position = "none") +
       xlab("") +
       ylab("") +
       scale_y_date(date_breaks = "1 year", date_labels = "%Y")
@@ -183,13 +185,18 @@ server <- function(input, output, session) {
     
     ## Build DF
     Net <- read.table("data/network.txt", h = T, stringsAsFactors = F, sep = "\t")
-    
+    subNet <- select(Net, edge, group)
+    subNet <- subNet[!duplicated(subNet),]
+    subNet <- rbind(subNet, c("BSc", "degree"))
     ##Define nodes
     nodes <- data.frame(node = unique(Net$node))
-    nodes$group <- "degree"
-    nodes <- rbind(nodes, data.frame(node = unique(Net$edge), group = Net$group))
+    # nodes$group <- "degree"
+    nodes <- rbind(nodes, data.frame(node = unique(Net$edge)))
+    nodes <- unique(nodes)
     nodes$id <- c(1:nrow(nodes))
-    nodes <- select(nodes, id, node, group)
+    nodes <- left_join(subNet, nodes, by = c("edge" = "node"))
+    nodes <- select(nodes, id, edge, group)
+    
     colnames(nodes) <- c("id", "label", "group")
     
     ##Create edgelist
@@ -198,7 +205,7 @@ server <- function(input, output, session) {
     NetB <- left_join(NetA, nodes, by = c("edge" = "label")) %>% rename(to = id)
     NetC <- select(NetB, from, to)
     ##Manually define education nodes - avoids creating duplicate degree nodes
-    NetC <- rbind(NetC, c(4, 2), c(2,3), c(3,1))
+    # NetC <- rbind(NetC, c(4, 2), c(2,3), c(3,1))
     
     ##build the network analysis
     visNetwork(nodes, NetC) %>% 

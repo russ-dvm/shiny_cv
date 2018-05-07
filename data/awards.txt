@@ -1,4 +1,4 @@
-award_name	amount	type	duration	date	date_end	desc
+award_name	Value	type	duration	date	date_end	desc
 Easter Bush Research Consortium and Pfizer Bursary	6557	scholarship	One time	2011-09-01	na	Entrance award obtained for my Masters degree.
 6th Orthomyxovirus Research Conference Travel Grant	500	award	one time	2012-09-01	na	Travel grant to defray the cost of attending the meeting.
 ACVP Resident/Graduate Student Travel Award	655	award	one time	2012-12-01	na	ACVP Travel Awards are available to graduate students or veterinary pathology residents for participation in the ACVP Annual Meeting. Recipients will be awarded a grant to help defray travel and lodging costs associated with attending the ACVP Annual Meeting. Recipients will be recognized during the ACVP Business Meeting

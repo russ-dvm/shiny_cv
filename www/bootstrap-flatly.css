@@ -7022,7 +7022,7 @@ a.list-group-item-danger.active:focus {
 }
 
 div.fixed-bg {
-    background-image: url("images/test.jpg");
+    background-image: url("images/pic01.jpg");
     min-height: 500px;
     background-attachment: fixed;
     background-position: center;

@@ -66,7 +66,7 @@ ui <- fluidPage(
                   ),
                   conditionalPanel(
                     condition = "input.pub_type == 'text'",
-                    paste("Other")
+                    includeHTML("docs/other.html")
                   )
                )
              )

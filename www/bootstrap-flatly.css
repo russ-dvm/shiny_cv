@@ -7034,7 +7034,7 @@ div.fixed-bg {
 
 div.transbox {
     margin-left: 30px;
-    background-color: #ffffff;
+    background-color: #000000;
     background-attachment: scroll;
     background-repeat: no-repeat;
     background-image: none;
@@ -7042,11 +7042,19 @@ div.transbox {
     filter: alpha(opacity=60); /* For IE8 and earlier */
     width: 75%;
     border-radius: 5px;
+    text-align: left;
 
 }
 
 div.transbox p {
     margin: 5%;
-    font-weight: bold;
-    color: #000000;
+    color: #ffffff;
+    font-size:20px;
 }
+
+
+
+
+
+
+

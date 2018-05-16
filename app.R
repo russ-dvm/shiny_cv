@@ -39,7 +39,7 @@ ui <- fluidPage(
     
     tabPanel("About", value = "nav_about", includeHTML("docs/index.html")),
     
-    tabPanel("Education", includeHTML("docs/test.html")), 
+    tabPanel("Education", includeHTML("docs/edu.html")), 
     
     tabPanel("Publications",
              fluidRow(

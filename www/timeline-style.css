@@ -246,7 +246,7 @@ header h1 {
   height: 0;
   width: 0;
   border: 7px solid transparent;
-  border-right: 7px solid white;
+  border-right: 7px solid #a6bddb;
 }
 
 .cd-timeline__content h2 {
@@ -313,7 +313,7 @@ header h1 {
     top: 24px;
     left: 100%;
     border-color: transparent;
-    border-left-color: white;
+    border-left-color: #a6bddb;
   }
   .cd-timeline__read-more {
     float: left;
@@ -333,7 +333,7 @@ header h1 {
     left: auto;
     right: 100%;
     border-color: transparent;
-    border-right-color: white;
+    border-right-color: #a6bddb;
   }
   .cd-timeline__block:nth-child(even) .cd-timeline__read-more {
     float: right;

@@ -5,9 +5,9 @@ account: rfraser
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 163024
-bundleId: 1377574
+bundleId: 1378941
 url: https://rfraser.shinyapps.io/shiny_cv/
-when: 1526504234.59008
+when: 1526571405.19806
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .gitattributes|README.md

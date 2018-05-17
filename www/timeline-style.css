@@ -132,6 +132,7 @@ header h1 {
   left: 0;
   width: 40px;
   height: 40px;
+  padding-top: 5px;
   border-radius: 50%;
   -webkit-box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
           box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
@@ -165,7 +166,7 @@ header h1 {
 }
 
 .cd-timeline__img.cd-timeline__img--bsc {
-  background: #d0d1e6;
+  background: #a6bddb;
 }
 
 
@@ -175,6 +176,7 @@ header h1 {
     height: 60px;
     left: 50%;
     margin-left: -30px;
+    padding-top:15px;
     /* Force Hardware Acceleration */
     -webkit-transform: translateZ(0);
             transform: translateZ(0);

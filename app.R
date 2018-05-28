@@ -4,6 +4,8 @@ library(markdown)
 library(tidyverse)
 library(viridis)
 library(visNetwork)
+library(collapsibleTree)
+
 
 ##modified from https://stackoverflow.com/questions/28117556/clickable-links-in-shiny-datatable
 createLink <- function(val) {
@@ -22,6 +24,10 @@ awards$duration <- awards$date_end - awards$date
 awards <- awards[order(awards$date, decreasing = T),]
 awards$rank <- c(1:nrow(awards))
 awards$award_name <- factor(awards$award_name, levels = awards$award_name)
+
+
+## Cretae experience data frame
+Veterinarian <- read.table("data/exp.txt", h=T, sep = "\t", stringsAsFactors = F)
 
 
 ui <- fluidPage(
@@ -71,6 +77,7 @@ ui <- fluidPage(
                )
              )
           ), 
+    
     tabPanel("Awards", 
              fluidRow(
                column(2, offset = 0, 
@@ -89,7 +96,17 @@ ui <- fluidPage(
                           <p>The colour schemes included in Viridis are designed to be colour-blind friendly. Have a click through the options to visualize the different schemes. The hue can be adjusted using the slide bar. </p>"))
              )
              ), 
-    tabPanel("Work Experience"),
+    
+    tabPanel("Work Experience",
+             fluidRow(
+               column(8, offset = 2, 
+              collapsibleTree(Veterinarian, hierarchy = c("type", "clinic", "skill"), height = 600, width = 800)
+             )),
+             fluidRow(
+               column(8, offset = 2, HTML("<p>Click a node to expand the content. Click and drag the entire image if it expands out of sight</p>"))
+             )
+    ),
+    
     tabPanel("Network Analysis", 
             fluidRow(
               column(10, offset = 0,

@@ -1,0 +1,16 @@
+type	clinic	skill
+Companion Animal Practice	Sechelt Animal Hospital	Routine wellness checks (PE, bloodwork, etc)
+Companion Animal Practice	Sechelt Animal Hospital	Performed routine and emergency surgery
+Companion Animal Practice	Animal Health Clinic	Communicated effectively with colleagues, staff, and clients
+Companion Animal Practice	Animal Health Clinic	Improved soft tissue surgical skills
+Companion Animal Practice	Animal Health Clinic	Worked  with small animal shelters to provide disease management strategies
+Companion Animal Practice	Animal Health Clinic	Routine wellness checks (PE, bloodwork, etc)
+Anatomic Pathology	Dept of Pathobiology, OVC 	Performed postmortem examinations on domestic species
+Anatomic Pathology	Dept of Pathobiology, OVC 	Evaluated biopsies from a tertiary veterinary referral hospital
+Anatomic Pathology	Dept of Pathobiology, OVC 	Trimmed tissues and ordered ancillary testing as necessary
+Anatomic Pathology	Dept of Pathobiology, OVC 	Delivered pertinent information to clincians with concise reports
+Companion Animal Practice	Sechelt Animal Hospital	Provided emergency service for the Sunshine Coast Regional District
+Companion Animal Practice	Sechelt Animal Hospital	Performed laparascopic surgery
+Companion Animal Practice	Sechelt Animal Hospital	Communicated effectively with colleagues, staff, and clients
+Companion Animal Practice	ACCM	Routine wellness checks (PE, bloodwork, etc)
+Companion Animal Practice	ACCM	Addressed specific needs of immunosuppressed clientele

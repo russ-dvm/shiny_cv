@@ -97,7 +97,7 @@ ui <- fluidPage(
              )
              ), 
     
-    tabPanel("Work Experience",
+    tabPanel("Clinical Experience",
              fluidRow(
                column(8, offset = 2, 
               collapsibleTree(Veterinarian, hierarchy = c("type", "clinic", "skill"), height = 600, width = 800)

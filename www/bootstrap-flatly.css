@@ -7022,8 +7022,8 @@ a.list-group-item-danger.active:focus {
 }
 
 div.fixed-bg {
-    background-image: url("images/pic01.jpg");
-    min-height: 500px;
+    background-image: url("images/me3.JPG");
+    min-height:100%;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -7033,28 +7033,36 @@ div.fixed-bg {
 }
 
 div.transbox {
-    margin-left: 30px;
+    margin-left: auto;
+    margin-right: 0;
     background-color: #000000;
     background-attachment: scroll;
     background-repeat: no-repeat;
     background-image: none;
-    opacity: 0.6;
-    filter: alpha(opacity=60); /* For IE8 and earlier */
-    width: 75%;
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+    width: 50%;
     border-radius: 5px;
     text-align: left;
-
 }
 
 div.transbox p {
-    margin: 5%;
+    margin: 2.5%;
     color: #ffffff;
     font-size:20px;
 }
 
+div.transbox h1,h2,h3 {
+  margin: 2.5%;
+  color: #3690c0;
+}
 
+div.transbox a {
+  color: #3690c0;
+}
 
-
-
+div.transbox a:hover{
+  color:#18bc9c;
+}
 
 

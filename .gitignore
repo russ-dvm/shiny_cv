@@ -3,3 +3,4 @@ docs/.DS_Store
 rsconnect/shinyapps.io/rfraser/shiny_cv.dcf
 *.dcf
 data/~$pubs.xlsx
+.DS_Store

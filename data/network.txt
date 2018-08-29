@@ -31,3 +31,5 @@ MSc	PhD	degree
 Summerlee Lab (University of Guelph)	Silvertown et al (2005)	publication
 PhD	Anatomic Pathology Rotation	teaching
 PhD	TA (Principles of Disease)	teaching
+Digard Lab (Roslin Institute)	6th Orthomyxovirus Travel Grant	award
+Anatomic Pathology Residency	CL Davis Foundation Award	award
